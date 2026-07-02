@@ -6,6 +6,8 @@
   <title>AR App Inventor Demo</title>
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <!-- Component για κείμενο με πλήρη υποστήριξη Unicode (άρα και ελληνικά) -->
+  <script src="https://unpkg.com/aframe-troika-text/dist/aframe-troika-text.min.js"></script>
   <style>
     html, body { margin: 0; overflow: hidden; height: 100%; background: transparent; }
     .arjs-loader {
@@ -25,8 +27,8 @@
   <!--
     ΑΛΛΑΞΕ ΑΥΤΑ ΤΑ ΔΥΟ ΟΝΟΜΑΤΑ ΑΡΧΕΙΩΝ ΜΕ ΤΑ ΔΙΚΑ ΣΟΥ:
     1) "pattern-marker.patt"  -> το αρχείο που κατέβασες από το marker generator
+                                  (ή preset="hiro" αν δοκιμάζεις ακόμα με Hiro)
     2) "content.png"          -> η εικόνα που θέλεις να εμφανίζεται πάνω στο marker
-    Και τα δύο πρέπει να είναι ανεβασμένα στο ΙΔΙΟ repository, δίπλα σε αυτό το index.html
   -->
 
   <a-scene embedded
@@ -38,7 +40,7 @@
       <img id="contentImg" src="content.png" crossorigin="anonymous">
     </a-assets>
 
-    <a-marker a-marker preset="hiro" id="my-marker"
+    <a-marker type="pattern" url="pattern-marker.patt" id="my-marker"
                smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
 
       <!-- Η εικόνα που εμφανίζεται πάνω στο marker -->
@@ -50,14 +52,11 @@
                material="transparent: true; shader: flat;">
       </a-image>
 
-      <!-- Το κείμενο κάτω από την εικόνα -->
-      <a-text value="Test"
-              position="0 0.15 0"
-              rotation="-90 0 0"
-              align="center"
-              color="#000000"
-              width="3">
-      </a-text>
+      <!-- Το κείμενο, τώρα με troika-text (υποστηρίζει ελληνικά) -->
+      <a-entity troika-text="value: Το κείμενό σου εδώ; fontSize: 0.2; color: #000000; anchor: center; align: center;"
+                position="0 0.15 0"
+                rotation="-90 0 0">
+      </a-entity>
 
     </a-marker>
 
