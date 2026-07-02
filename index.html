@@ -23,41 +23,55 @@
   </div>
 
   <!--
-    ΣΗΜΑΝΤΙΚΟ:
-    - preset="hiro" -> αναγνωρίζει το ΕΤΟΙΜΟ marker "Hiro" (βλ. οδηγίες παρακάτω για εκτύπωση)
-    - Αν θέλεις ΔΙΚΟ ΣΟΥ marker, άλλαξε το <a-marker> block πιο κάτω
-      σε: <a-marker type="pattern" url="pattern-marker.patt">
+    ΑΛΛΑΞΕ ΑΥΤΑ ΤΑ ΔΥΟ ΟΝΟΜΑΤΑ ΑΡΧΕΙΩΝ ΜΕ ΤΑ ΔΙΚΑ ΣΟΥ:
+    1) "pattern-marker.patt"  -> το αρχείο που κατέβασες από το marker generator
+    2) "content.png"          -> η εικόνα που θέλεις να εμφανίζεται πάνω στο marker
+    Και τα δύο πρέπει να είναι ανεβασμένα στο ΙΔΙΟ repository, δίπλα σε αυτό το index.html
   -->
+
   <a-scene embedded
            arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'
            vr-mode-ui="enabled: false"
            renderer="logarithmicDepthBuffer: true;">
 
     <a-assets>
-      <!-- Εδώ μπορείς να βάλεις 3D μοντέλα (.gltf), εικόνες, βίντεο -->
+      <img id="contentImg" src="content.png" crossorigin="anonymous">
     </a-assets>
 
-    <a-marker preset="hiro" id="hiro-marker" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
-      <!-- Ό,τι βάλεις εδώ μέσα εμφανίζεται ΠΑΝΩ στο marker όταν το βλέπει η κάμερα -->
-      <a-box position="0 0.5 0" material="color: #4CC3D9; opacity: 0.9" scale="1 1 1">
-        <a-animation attribute="rotation" dur="4000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
-      </a-box>
-      <a-text value="AR App Inventor" position="0 1.3 0" align="center" color="black" width="4"></a-text>
+    <a-marker type="pattern" url="pattern-marker.patt" id="my-marker"
+               smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+
+      <!-- Η εικόνα που εμφανίζεται πάνω στο marker -->
+      <a-image src="#contentImg"
+               position="0 0.9 0"
+               rotation="-90 0 0"
+               width="2"
+               height="1.3"
+               material="transparent: true; shader: flat;">
+      </a-image>
+
+      <!-- Το κείμενο κάτω από την εικόνα -->
+      <a-text value="Αντισηπτικό Χεριών"
+              position="0 0.15 0"
+              rotation="-90 0 0"
+              align="center"
+              color="#000000"
+              width="3">
+      </a-text>
+
     </a-marker>
 
     <a-entity camera></a-entity>
   </a-scene>
 
   <script>
-    // Κρύβει το μήνυμα φόρτωσης μόλις ξεκινήσει η κάμερα
     const scene = document.querySelector('a-scene');
     scene.addEventListener('loaded', () => {
       const loader = document.querySelector('.arjs-loader');
       if (loader) loader.style.display = 'none';
     });
 
-    // Ενημέρωση όταν βρεθεί/χαθεί το marker (χρήσιμο για debugging)
-    const marker = document.querySelector('#hiro-marker');
+    const marker = document.querySelector('#my-marker');
     marker.addEventListener('markerFound', () => console.log('Marker found!'));
     marker.addEventListener('markerLost', () => console.log('Marker lost.'));
   </script>
